@@ -104,6 +104,7 @@ OUTPUT_FILE="${OUTPUT_FILE:-artifacts/utilization-report.csv}"
 
 if [[ -z "${PALETTE_API_URL}" || -z "${API_KEY}" ]]; then
   echo "Error: PALETTE_API_URL and API_KEY must both be set (via command-line or environment)" >&2
+  echo "Specify a config file, use: --config vertex.config"
   echo "Use --help for usage information" >&2
   exit 1
 fi
