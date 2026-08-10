@@ -2,12 +2,12 @@
 set -eu
 
 # Configuration
-PALETTE_API_URL=""
-API_KEY=""
-PROJECT_UID=""
-OUTPUT_FILE=""
+PALETTE_API_URL="${PALETTE_API_URL:-}"
+API_KEY="${API_KEY:-}"
+PROJECT_UID="${PROJECT_UID:-}"
+OUTPUT_FILE="${OUTPUT_FILE:-}"
 
-function usage () {
+function usage() {
   cat <<EOF
 Usage: $0 [--config <file>] --api-url <url> --api-key <key> [options]
 
@@ -30,12 +30,12 @@ Config file format: KEY=VALUE
 Supported config keys: PALETTE_API_URL API_KEY PROJECT_UID OUTPUT_FILE
 
 Example:
-  $0 --config vertex.config --output cores.csv
+  $0 --config vertex.config --output artifacts/cores.csv
 EOF
   exit 0
 }
 
-load_config() {
+function load_config() {
   local config_file="$1"
   [[ -f "$config_file" ]] || { echo "Error: config file not found: $config_file" >&2; exit 1; }
 
@@ -60,7 +60,7 @@ load_config() {
   done < "$config_file"
 }
 
-parse_args() {
+function parse_args() {
   local config_file="${CONFIG_FILE:-}"
   local args=("$@")
   local i=0
@@ -118,7 +118,7 @@ echo "Fetching cores under management from Palette VerteX..."
 echo "Output file: $OUTPUT_FILE"
 mkdir -p "$(dirname -- "$OUTPUT_FILE")"
 
-get_project_cores() {
+function get_project_cores() {
   local project_uid=$1
   local response
 
@@ -144,7 +144,7 @@ get_project_cores() {
   echo "$response"
 }
 
-calculate_cores() {
+function calculate_cores() {
   local json_data=$1
   local output_file=$2
 
